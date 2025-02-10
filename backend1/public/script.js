@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // ✅ Ensure correct API request URL
         fetch('https://blazemarketingm.blazemarketingmedia.com/submit-form', {
             method: 'POST',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
