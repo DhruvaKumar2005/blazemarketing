@@ -7,6 +7,9 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_OPTIONS = "--tls-min-v1.2";
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
