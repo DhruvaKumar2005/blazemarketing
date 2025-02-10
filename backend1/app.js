@@ -10,17 +10,19 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://blazemarketingm.blazemarketingmedia.com', 'https://blazemarketing.onrender.com'],
-    methods: ['GET', 'POST','OPTIONS'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true
-}));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');  // You can replace '*' with specific origins if needed
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    next();
+});
+
 
 app.options('*', (req, res) => {
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.sendStatus(200);
 });
 
