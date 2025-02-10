@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const path = require('path');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,16 +11,15 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://blazemarketingm.blazemarketingmedia.com'],
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://blazemarketingm.blazemarketingmedia.com', 'https://blazemarketing.onrender.com/'],
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
 
-// Serve static files
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-// MongoDB connection
-const uri = 'mongodb+srv://dhruva:dhruva123@backenddb.klh5v.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB';
+const uri = process.env.MONGO_URI;
 let db;
 
 async function connectDB() {
@@ -33,9 +33,9 @@ async function connectDB() {
     }
 }
 
-connectDB(); // Connect to MongoDB
+connectDB(); 
 
-// Ensure DB is connected before processing requests
+
 app.use((req, res, next) => {
     if (!db) {
         return res.status(500).json({ success: false, message: 'Database not connected' });
@@ -44,12 +44,12 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve the main landing page
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Handle form submissions
+
 app.post('/submit-form', async (req, res) => {
     try {
         const { name, phone, email, city, state } = req.body;
@@ -74,7 +74,7 @@ app.post('/submit-form', async (req, res) => {
     }
 });
 
-// Retrieve submitted form details
+
 app.get('/get-details', async (req, res) => {
     try {
         const results = await req.db.collection('form_details').find().toArray();
@@ -85,7 +85,7 @@ app.get('/get-details', async (req, res) => {
     }
 });
 
-// Start the server
+
 app.listen(port, () => {
     console.log(`🚀 Server is running on http://localhost:${port}`);
 });
