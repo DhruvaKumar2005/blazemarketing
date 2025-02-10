@@ -11,20 +11,22 @@ document.addEventListener('DOMContentLoaded', function () {
             state: form.get('state')
         };
 
-        // ✅ Ensure correct API request URL
-        fetch('https://blazemarketingm.blazemarketingmedia.com/submit-form', {
+        // ✅ Use relative URL if frontend & backend are on the same domain
+        fetch('/submit-form', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 alert('✅ Form submitted successfully! Your book will download shortly.');
-                
+
                 // ✅ Trigger PDF download
                 const a = document.createElement('a');
                 a.href = 'Digital_Marketing.pdf';
