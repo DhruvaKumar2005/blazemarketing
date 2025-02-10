@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://blazemarketingm.blazemarketingmedia.com', 'https://blazemarketing.onrender.com/'],
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://blazemarketingm.blazemarketingmedia.com', 'https://blazemarketing.onrender.com'],
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
 }));
